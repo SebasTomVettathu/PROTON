@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="{% url 'webguest:Newuser' %}">HOMEPAGE</a>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table align="center">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txtname" id="" placeholder="Enter Name" required
+                        value="{{Edit.user_name}}"></td>
+            </tr>
+            <tr>
+                <td>User Gender</td>
+                <td><input type="text" name="txtgender" id="" placeholder="Enter Gender" required
+                        value="{{Edit.user_gender}}"></td>
+            </tr>
+          
+            <tr>
+                <td>Contact</td>
+                <td><input type="text" name="txtcontact" id="" placeholder="Enter Contact" required
+                        value="{{Edit.user_contact}}"></td>
+            </tr>
+            <tr>
+                <td>E-mail</td>
+                <td><input type="text" name="txtemail" id="" placeholder="Enter Email" required
+                        value="{{Edit.user_email}}"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="text" name="txtpassword" placeholder="Enter Password" required id=""
+                        value="{{Edit.user_password}}"></td>
+            </tr>
+            <tr>
+                <td>User Type</td>
+                <td><input type="text" name="txttype" id="" placeholder="Enter Type" required
+                        value="{{Edit.user_type}}"></td>
+            </tr>
+            <tr>
+                <td> user Photo</td>
+                <td><input type="file" name="fileimg" id=""  value="{{Edit.user_image}}" required></td>
+            </tr>
+            <tr>
+                <td> user proof</td>
+                <td><input type="file" name="fileimgproof" id=""  value="{{Edit.user_image}}" required></td>
+            </tr>
+            <tr>
+                <td>place</td>
+                <td>
+                    <select id="place" name="place_id" value="{{Edit.place}}">
+                        <option value="" >...Select...</option>
+                        {% for i in place %}
+                        <option value="{{i.id}}">{{i.place_name}}</option>
+                        {% endfor %}
+                      </select>
+                </td>
+            </tr>
+
+           
+           
+
+
+            <tr>
+
+                <td colspan="2" align="center">
+                    <input type="submit" name="btnsubmit" value="Save">
+                    <input type="reset" name="btncancel" value="Cancel">
+                </td>
+            </tr>
+        </table>
+    </form>
+    
+
+</body>
+
+</html>

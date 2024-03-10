@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page of CPO</title>
+</head>
+<body>
+    <table align="center">
+        <h1 align="center">Homepage of user</h1>
+        <p>welcome </p>
+        <tr>
+            <td><a href="{% url 'webcpo:myprofile'  %}">My Profile</a> </td>
+        </tr>
+        <tr>
+            <td><a href="{% url 'webcpo:editprofile' user.id %}">Edit profile</a> </td>
+        </tr>
+        <tr>
+            <td><a href="{% url 'webcpo:changepassword' %}">changepassword </a> </td>
+        </tr>
+
+
+
+        
+        
+        
+        
+    </table>
+</body>
+</html>
