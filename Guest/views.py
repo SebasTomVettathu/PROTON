@@ -19,11 +19,7 @@ def Login(request):
             user=tbl_user.objects.get(user_email=request.POST.get("txtemail"),user_password=request.POST.get("txtpassword"))
             request.session["uid"] = user.id
             return redirect("webuser:homepage")
-        elif(cpocount > 0):
-            cpo=tbl_cpo.objects.get(cpo_email=request.POST.get("txtemail"),cpo_password=request.POST.get("txtpassword"))
-            request.session["cid"] = cpo.id
-            return redirect("webcpo:homepage")
-       
+        
         else:
             return render(request,"Guest/Login.html")
     else:   

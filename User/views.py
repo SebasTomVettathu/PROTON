@@ -16,7 +16,8 @@ def Editprofile(request,id):
     if request.method=="POST":
         Data.user_name=request.POST.get("txtname")
         Data.user_contact=request.POST.get("txtcontact")
-        Data.auser_email=request.POST.get("txtemail")
+        Data.user_email=request.POST.get("txtemail")
+
         Data.save()
         return redirect("webuser:homepage") 
     else:
