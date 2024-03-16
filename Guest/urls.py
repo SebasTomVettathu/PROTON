@@ -13,6 +13,7 @@ urlpatterns = [
     path('Login/',views.Login,name="Login"),
     
     path('Cporegistration/',views.cporegistration,name="Cporegistration"),
+    path('Index/',views.LoadMainIndex,name="LoadMainIndex"),
     
    
 ]

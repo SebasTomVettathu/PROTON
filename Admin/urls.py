@@ -19,4 +19,18 @@ urlpatterns = [
   path('Place/', views.place,name="Place"),
   path('delPlace/<int:did>', views.delPlace,name="delPlace"),
   path('placeupdate/<int:eid>',views.placeupdate,name="placeupdate"),
+
+  path('Type/', views.Type,name="type"),
+  path('delType/<int:id>', views.DeleteType,name="delType"),
+  path('typeupdate/<int:id>',views.EditType,name="typeupdate"),
+  path('Watt/', views.Watt,name="watt"),
+  path('DeleteWatt/<int:id>', views.DeleteWatt,name="DeleteWatt"),
+  path('EditWatt/<int:id>', views.EditWatt,name="EditWatt"),
+
+  path("ViewComplaint/",views. ViewComplaint,name="ViewComplaint"),
+  path("Reply/<int:rid>",views. Reply,name="Reply"),
+  path("ViewFeedback/",views. ViewFeedback,name="ViewFeedback"),
+
+  path("logout/",views. logout,name="logout"),
+
 ]

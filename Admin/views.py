@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from Admin.models import *
+from User.models import *
 
 def district(request):
     district=tbl_district.objects.all()
@@ -99,5 +100,75 @@ def placeupdate(request,eid):
 
 def Homepage(request):
      admin = tbl_admin.objects.get(id=request.session["aid"]),
-     return render(request,"Admin\Homepage.html")
+     return render(request,"Admin/Homepage.html")
    
+def Type(request):
+     type = tbl_type.objects.all()
+     if request.method=="POST":
+        tbl_type.objects.create(type_name=request.POST.get("txttype"))
+        return render(request,"Admin/Type.html",{"data":type})
+     else:
+        return render(request,"Admin/Type.html",{"data":type})
+     
+def DeleteType(request,id):
+    tbl_type.objects.get(pk=id).delete()
+    return redirect("webadmin:type")
+
+def EditType(request,id):
+    data=tbl_type.objects.get(id=id)
+    if request.method=="POST":
+        data.type_name=request.POST.get("txttype")
+        data.save()
+        return redirect("webadmin:type")
+    else:
+        return render(request,"Admin/Type.html",{"Edit":data})
+
+def Watt(request):
+     ttype=tbl_type.objects.all()
+     watt = tbl_watt.objects.all()
+     if request.method=="POST":
+       data=tbl_type.objects.get(id=request.POST.get("sel_watt"))
+       tbl_watt.objects.create(watt_data=request.POST.get("txttype"),type=data)
+       return render(request,"Admin/Watt.html",{"watt":watt,'type':ttype})
+     else:
+       return render(request,"Admin/Watt.html",{"watt":watt,'type':ttype})
+
+def DeleteWatt(request,id):
+    tbl_watt.objects.get(id=id).delete()
+    return redirect("webadmin:watt")
+
+def  EditWatt(request,id):
+    ttype=tbl_type.objects.all()
+    data=tbl_watt.objects.get(id=id)
+    if  request.method=="POST":
+        seltype=tbl_type.objects.get(id=request.POST.get("sel_watt"))
+        data.type=seltype
+        data.watt_data=request.POST.get("txttype")
+        data.save()
+        return redirect("webadmin:watt")
+    else:
+        return render(request,"Admin/Watt.html",{"Edit":data,'type':ttype})
+
+def ViewComplaint(request):
+    newcom=tbl_complaint.objects.filter(complaint_status=0)
+    recom=tbl_complaint.objects.filter(complaint_status=1)
+    return render(request,"Admin/ViewComplaint.html",{'new':newcom,'repl':recom})  
+def Reply(request,rid):
+    com=tbl_complaint.objects.get(id=rid)
+    if request.method=="POST":
+        com.complaint_reply=request.POST.get("txtpro")
+        com.complaint_status=1
+        com.save()
+        return redirect("webadmin:ViewComplaint")
+    else:
+        return render(request,"Admin/Reply.html")
+def ViewFeedback(request):
+    data=tbl_feedback.objects.all()
+    return render(request,"Admin/ViewFeedback.html",{'data':data})     
+
+def logout(request):
+    if 'aid' in request.session:
+        del request.session['aid']
+        return redirect('webguest:Login')
+    else:
+        return redirect('webguest:Login')                   

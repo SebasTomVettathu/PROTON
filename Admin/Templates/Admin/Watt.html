@@ -1,0 +1,52 @@
+{% extends 'Admin/Header.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watts</title>
+</head>
+<body>
+<form method="POST">
+    {% csrf_token %}
+    <table align="center">
+        <tr>
+            <td>Charger Type</td>
+            <td><select name="sel_watt" id="sel_watt">
+                    <option value="">...Select...</option>
+                    {% for i in type %}
+                    <option
+                        {% if i.id == Edit.type.id %}
+                            selected
+                        {% endif %}
+                    value="{{i.id}}">{{i.type_name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+            
+        <tr>
+            <td>Watt</td>
+            <td><input type="text" name="txttype" id="" value="{{Edit.watt_data}}"></td></tr>
+            <tr><td><input type="submit" value="save" name="btn"></td></tr>
+            </table></form>
+
+    <table border="1"  width="50%" align="center">
+        <tr>
+            <td>Sl.no</td>
+            <td>Type</td>
+            <td>Watt</td>
+            <td>Action</td>
+        </tr>
+        {% for i in watt %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.type.type_name}}</td>
+            <td>{{i.watt_data}}</td>
+            <td><a href="{% url 'webadmin:DeleteWatt' i.id %}">Delete</a>/<a href="{% url 'webadmin:EditWatt' i.id %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endblock content%}

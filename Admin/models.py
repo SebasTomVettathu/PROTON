@@ -12,7 +12,15 @@ class tbl_admin(models.Model):
     admin_contact = models.CharField(max_length=15)
 
 class tbl_place(models.Model):
-    place_name=models.CharField(max_length=50)
+    place_name = models.CharField(max_length=50)
     district = models.ForeignKey(tbl_district, on_delete=models.CASCADE)
+
+class tbl_type(models.Model):
+    type_name = models.CharField(max_length=50)
+    
+class tbl_watt(models.Model):
+    watt_data = models.CharField(max_length=50)
+    type = models.ForeignKey(tbl_type, on_delete=models.CASCADE)
+
 
 

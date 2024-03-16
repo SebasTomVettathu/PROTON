@@ -1,0 +1,150 @@
+
+{% extends 'CPO/Header.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="{% url 'webguest:Cporegistration' %}">HOMEPAGE</a>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table align="center">
+            <tr>
+                <td>Port Name</td>
+                <td><input type="text" name="txtname" id="" placeholder="Enter Name" required
+                        value="{{Edit.port_name}}"></td>
+            </tr>
+            <tr>
+                <td>Details</td>
+                <td><input type="text" name="txtdetails" id="" placeholder="Enter Details" required
+                        value="{{Edit.port_details}}"></td>
+            </tr>
+
+            <tr>
+                <td>Type</td>
+                <td>
+                    <select id="type" name="type_id" value="{{Edit.type}}">
+                        <option value="" >...Select...</option>
+                        {% for i in type %}
+                        <option value="{{i.id}}">{{i.type_name}}</option>
+                        {% endfor %}
+                      </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Watt</td>
+                <td>
+                    <select id="watt" name="watt_id" value="{{Edit.watt}}">
+                        <option value="" >...Select...</option>
+                        {% for i in watt %}
+                        <option value="{{i.id}}">{{i.watt_name}}</option>
+                        {% endfor %}
+                      </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Amount</td>
+                <td><input type="text" name="txtamount" id="" placeholder="Enter Amount" required
+                        value="{{Edit.port_amount}}"></td>
+            </tr>
+
+            <tr>
+                <td>District</td>
+                <td>
+                    <select id="district" name="district" value="{{Edit.place}}">
+                        <option value="" >...Select...</option>
+                        {% for i in district %}
+                        <option value="{{i.id}}">{{i.district_name}}</option>
+                        {% endfor %}
+                      </select>
+                </td>
+            </tr>
+            <tr>
+                <td>place</td>
+                <td>
+                    <select id="place" name="place_id" value="{{Edit.place}}">
+                        <option value="" >...Select...</option>
+                        {% for i in place %}
+                        <option value="{{i.id}}">{{i.place_name}}</option>
+                        {% endfor %}
+                      </select>
+                </td>
+            </tr>
+
+           
+
+
+            <tr>
+
+                <td colspan="2" align="center">
+                    <input type="submit" name="btnsubmit" value="Save">
+                    <input type="reset" name="btncancel" value="Cancel">
+                </td>
+            </tr>
+        </table>
+    </form>
+    
+    <table border="1" style="margin-top: 5px;" align="center">
+    <tr>
+        <th>Sl.no</th>
+        <th>Port</th>
+        <th>Details</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Watt</th>
+        <th>District</th>
+        <th>Place</th>
+        <th>Action</th>
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.port_name}}</td>
+            <td>{{i.port_details}}</td>
+            <td>{{i.port_amount}}</td>
+            <td>{{i.watt.type.type_name}}</td>
+            <td>{{i.watt.watt_data}}</td>
+            <td>{{i.place.district.district_name}}</td>
+            <td>{{i.place.place_name}}</td>
+            <td><a href="{% url 'webcpo:DeletePort' i.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tr>
+</table>
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webguest:ajaxplace' %}";
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#place").html(data);
+            },
+        });
+    });
+    $("#type").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webcpo:AjaxWatt' %}";
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#watt").html(data);
+            },
+        });
+    });
+</script>
+{% endblock content %}

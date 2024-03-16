@@ -3,6 +3,10 @@ from Admin.models import  *
 from Guest.models import  *
 
 
+def LoadMainIndex(request):
+    return render(request,"Guest/index.html")
+
+
 def Homepage(request):
     return render(request, "Guest/Homepage.html") 
 
@@ -10,15 +14,19 @@ def Login(request):
     if request.method == "POST":
         admincount = tbl_admin.objects.filter(admin_email=request.POST.get("txtemail"),admin_password=request.POST.get("txtpassword")).count()
         usercount=tbl_user.objects.filter(user_email=request.POST.get("txtemail"),user_password=request.POST.get("txtpassword")).count()
-
+        cpocount=tbl_cpo.objects.filter(cpo_email=request.POST.get("txtemail"),cpo_password=request.POST.get("txtpassword")).count()
         if admincount > 0:
             admin = tbl_admin.objects.get(admin_email=request.POST.get("txtemail"),admin_password=request.POST.get("txtpassword"))
             request.session["aid"] = admin.id
-            return redirect("webadmin:homepage")
+            return redirect("webadmin:Homepage")
         elif(usercount > 0):
             user=tbl_user.objects.get(user_email=request.POST.get("txtemail"),user_password=request.POST.get("txtpassword"))
             request.session["uid"] = user.id
             return redirect("webuser:homepage")
+        elif(cpocount > 0):
+            cpo=tbl_cpo.objects.get(cpo_email=request.POST.get("txtemail"),cpo_password=request.POST.get("txtpassword"))
+            request.session["cid"] = cpo.id
+            return redirect("webcpo:homepage")
         
         else:
             return render(request,"Guest/Login.html")
@@ -26,6 +34,7 @@ def Login(request):
         return render(request,"Guest/Login.html")
 
 def newuser(request):
+    district=tbl_district.objects.all()
     place1=tbl_place.objects.all()
     user=tbl_user.objects.all()
     if request.method == "POST": 
@@ -35,7 +44,7 @@ def newuser(request):
             user_gender=request.POST.get("txtgender"),
             user_contact=request.POST.get("txtcontact"),
             user_email=request.POST.get("txtemail"),
-            user_password=request.POST.get("txtpaswd"),
+            user_password=request.POST.get("txtpassword"),
             user_type=request.POST.get("txttype"),
             user_photo=request.FILES.get("fileimg"),
             user_proof=request.FILES.get("fileimgproof"),
@@ -46,7 +55,7 @@ def newuser(request):
         return redirect("webguest:Newuser")
     else:
 
-        return render(request,"Guest/Newuser.html",{"data":user,"place":place1})
+        return render(request,"Guest/Newuser.html",{"data":user,"place":place1,'district':district})
 
 def ajaxplace(request):
     dis = tbl_district.objects.get(id=request.GET.get("did"))
@@ -54,6 +63,7 @@ def ajaxplace(request):
     return render(request,"Guest/ajaxPlace.html",{"placedata":place} )
 
 def cporegistration(request):
+    district=tbl_district.objects.all()
     place1=tbl_place.objects.all()
     cpo=tbl_cpo.objects.all()
     if request.method == "POST": 
@@ -72,4 +82,5 @@ def cporegistration(request):
         return redirect("webguest:Cporegistration")
     else:
 
-        return render(request,"Guest/Cporegistration.html",{"data":cpo,"place":place1})
+        return render(request,"Guest/Cporegistration.html",{"data":cpo,"place":place1,'district':district})
+

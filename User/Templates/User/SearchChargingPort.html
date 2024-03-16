@@ -1,0 +1,133 @@
+{% extends 'User/Header.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" method="post" style="margin-top: 60px;">
+        {% csrf_token %}
+        <table border="1" align="center">
+            <tr>
+                <td>District</td>
+                <td>
+                    <select name="sel_district" id="district" onchange="getPort()">
+                        <option value="">...Select...</option>
+                        {% for i in district %}
+                        <option value="{{i.id}}">{{i.district_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td>
+                    <select name="sel_place" id="place" onchange="getPort()">
+                        <option value="">...Select...</option>
+                        {% for i in place %}
+                        <option value="{{i.id}}">{{i.place_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            <tr>
+                <td>Type</td>
+                <td><select name="type" id="type" onchange="getPort()">
+                    <option value="">Select</option>
+                    {% for i in type %}
+                    <option value="{{i.id}}">{{i.type_name}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            
+        </table>
+    </form>
+    <div id="result">
+    {% for i in data %}
+    <style>
+        .card {
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 10px;
+          width: 300px; /* Adjust width as needed */
+          margin-bottom: 20px;
+        }
+        
+        .card h2 {
+          font-size: 18px;
+          margin-bottom: 5px;
+        }
+        
+        .card p {
+          margin-bottom: 10px;
+        }
+        
+        .card a {
+          display: block;
+          text-align: center;
+          background-color: #007bff;
+          color: #fff;
+          padding: 8px 12px;
+          border-radius: 4px;
+          text-decoration: none;
+          transition: background-color 0.3s;
+        }
+        
+        .card a:hover {
+          background-color: #0056b3;
+        }
+        </style>
+        
+        <table border="0">
+          <tr>
+            <td class="card">
+              <h2>{{i.port_name}}</h2>
+              <p>{{i.port_details}}</p>
+              <p>Rs.{{i.port_amount}}</p>
+              <p>{{i.watt.type.type_name}}</p>
+              <p>{{i.watt.watt_data}}</p>
+              <p>{{i.place.district.district_name}}</p>
+              <p>{{i.place.place_name}}</p>
+              <a href="{% url 'webuser:PortBooking' i.id %}">Book Port</a>
+            </td>
+          </tr>
+        </table>
+    {% endfor%}
+</div>
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webguest:ajaxplace' %}";
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#place").html(data);
+            },
+        });
+    });
+    function getPort(){
+        var dis=document.getElementById("district").value;
+        var pid=document.getElementById("place").value;
+        var tid=document.getElementById("type").value;
+        var ur = "{% url 'webuser:AjaxPort' %}";
+        $.ajax({
+            url: ur,
+            data: { did: dis,pid:pid,tid:tid },
+            success: function (data) {
+                $("#result").html(data);
+            },
+        });
+    }
+    </script>
+    {% endblock content %}

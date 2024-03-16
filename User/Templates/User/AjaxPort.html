@@ -1,0 +1,50 @@
+{% for i in data %}
+<style>
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      width: 300px; /* Adjust width as needed */
+      margin-bottom: 20px;
+    }
+    
+    .card h2 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    
+    .card p {
+      margin-bottom: 10px;
+    }
+    
+    .card a {
+      display: block;
+      text-align: center;
+      background-color: #007bff;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    
+    .card a:hover {
+      background-color: #0056b3;
+    }
+    </style>
+    
+    <table border="0">
+      <tr>
+        <td class="card">
+          <h2>{{i.port_name}}</h2>
+          <p>{{i.port_details}}</p>
+          <p>Rs.{{i.port_amount}}</p>
+          <p>{{i.watt.type.type_name}}</p>
+          <p>{{i.watt.watt_data}}</p>
+          <p>{{i.place.district.district_name}}</p>
+          <p>{{i.place.place_name}}</p>
+          <a href="{% url 'webuser:PortBooking' i.id %}">Book Port</a>
+        </td>
+      </tr>
+    </table>
+    {% endfor%}

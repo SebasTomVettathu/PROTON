@@ -5,33 +5,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 10px 0;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"],
+        input[type="reset"] {
+            width: 48%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 2%;
+        }
+
+        input[type="submit"]:hover,
+        input[type="reset"]:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        a:hover {
+            color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
-    <a href="{% url 'webguest:Cporegistration' %}">HOMEPAGE</a>
+   
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <h2>CPO Registration</h2>
         <table align="center">
             <tr>
                 <td>CPO Name</td>
-                <td><input type="text" name="txtname" id="" placeholder="Enter Name" required
+                <td><input type="text" name="txtname" id="" placeholder="Enter Name" 
                         value="{{Edit.cpo_name}}"></td>
             </tr>
             <tr>
                 <td>CPO Contact</td>
-                <td><input type="text" name="txtcontact" id="" placeholder="Enter Contact" required
+                <td><input type="text" name="txtcontact" id="" placeholder="Enter Contact" required pattern="[7-9]{1}[0-9]{9}"
                         value="{{Edit.cpo_contact}}"></td>
             </tr>
             <tr>
                 <td>CPO E-mail</td>
-                <td><input type="text" name="txtemail" id="" placeholder="Enter Email" required
+                <td><input type="email" name="txtemail" id="" placeholder="Enter Email" required
                         value="{{Edit.cpo_email}}"></td>
             </tr>
-            <tr>
-                <td>Password</td>
-                <td><input type="text" name="txtpaswd" placeholder="Enter Password" required id=""
-                        value="{{Edit.cpo_password}}"></td>
-            </tr>
+            
             <tr>
                 <td> Station Name</td>
                 <td><input type="text" name="txtstationname" id=""  value="{{Edit.cpo_stationname}}" required></td>
@@ -41,7 +114,18 @@
                 <td><input type="file" name="fileimgproof" id=""  value="{{Edit.cpo_proof}}" required></td>
             </tr>
             <tr>
-                <td>place</td>
+                <td>District</td>
+                <td>
+                    <select id="district" name="district" value="{{Edit.place}}">
+                        <option value="" >...Select...</option>
+                        {% for i in district %}
+                        <option value="{{i.id}}">{{i.district_name}}</option>
+                        {% endfor %}
+                      </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Place</td>
                 <td>
                     <select id="place" name="place_id" value="{{Edit.place}}">
                         <option value="" >...Select...</option>
@@ -53,20 +137,47 @@
             </tr>
 
            
-           
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="txtpaswd" placeholder="Enter Password" required id="" 
+                        value="{{Edit.cpo_password}}"></td>
+            </tr>
 
 
             <tr>
 
                 <td colspan="2" align="center">
-                    <input type="submit" name="btnsubmit" value="Save">
+                    <input type="submit" name="btnsubmit" value="Save" style="margin: auto;">
                     <input type="reset" name="btncancel" value="Cancel">
                 </td>
             </tr>
         </table>
     </form>
-    
-
 </body>
 
 </html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webguest:ajaxplace' %}";
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#place").html(data);
+            },
+        });
+    });
+    $("#district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'webguest:ajaxplace' %}";
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#place").html(data);
+            },
+        });
+    });
+</script>
